@@ -637,16 +637,41 @@ function Library.Main(Name, X, Y)
             local Dropdown = CreateModule.Instance("Frame", {
                 Parent = PageList,
                 Name = config.Name,
-                BackgroundColor3 = Darker(Color3.fromRGB(32, 32, 37), 1.15),
+                BackgroundTransparency = 1,
                 BorderSizePixel = 0,
                 BorderColor3 = Color3.fromRGB(40, 40, 40),
                 Position = UDim2.new(0, 0, 0, 0),
-                Size = UDim2.new(0.95, 0, 0, 30),
+                Size = UDim2.new(0.95, 0, 0, 50),
+                ClipsDescendants = true
+            })
+
+            local TitleLabel = CreateModule.Instance("TextLabel", {
+                Parent = Dropdown,
+                Name = "Title",
+                BackgroundTransparency = 1,
+                BorderSizePixel = 0,
+                Position = UDim2.new(0, 0, 0, 0),
+                Size = UDim2.new(1, 0, 0, 20),
+                Font = Enum.Font[Library.Theme.Font],
+                TextColor3 = Darker(Library.Theme.FontColor, 1.5),
+                Text = config.Name,
+                TextSize = 16,
+                TextXAlignment = Enum.TextXAlignment.Center,
+                TextYAlignment = Enum.TextYAlignment.Top
+            })
+
+            local DropdownFrame = CreateModule.Instance("Frame", {
+                Parent = Dropdown,
+                Name = "DropdownFrame",
+                BackgroundColor3 = Darker(Color3.fromRGB(32, 32, 37), 1.15),
+                BorderSizePixel = 0,
+                Position = UDim2.new(0, 0, 0, 20),
+                Size = UDim2.new(1, 0, 0, 30),
                 ClipsDescendants = true
             })
 
             local DropdownButton = CreateModule.Instance("TextButton", {
-                Parent = Dropdown,
+                Parent = DropdownFrame,
                 Name = "DropdownButton",
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -654,7 +679,7 @@ function Library.Main(Name, X, Y)
                 Position = UDim2.new(0, 0, 0, 0),
                 Size = UDim2.new(1, 0, 0, 30),
                 Font = Enum.Font[Library.Theme.Font],
-                Text = "  " .. config.Name,
+                Text = "  " .. (config.Default or config.Values[1]),
                 TextSize = 16,
                 TextColor3 = Darker(Library.Theme.FontColor, 1.5),
                 TextXAlignment = Enum.TextXAlignment.Left,
@@ -678,7 +703,7 @@ function Library.Main(Name, X, Y)
             })
 
             local List = CreateModule.Instance("ScrollingFrame", {
-                Parent = Dropdown,
+                Parent = DropdownFrame,
                 Name = "List",
                 BackgroundTransparency = 1,
                 BorderSizePixel = 0,
@@ -709,13 +734,13 @@ function Library.Main(Name, X, Y)
             })
 
             CreateModule.Instance("UICorner", {
-                Parent = Dropdown,
+                Parent = DropdownFrame,
                 Name = "Corner",
                 CornerRadius = UDim.new(0, 5)
             })
 
             CreateModule.Instance("UIStroke", {
-                Parent = Dropdown,
+                Parent = DropdownFrame,
                 Name = "Stroke",
                 Thickness = 1,
                 Color = Color3.fromRGB(40, 40, 40),
@@ -728,11 +753,11 @@ function Library.Main(Name, X, Y)
                 if input.UserInputType == Enum.UserInputType.Touch then
                     IsOpened = not IsOpened
                     if IsOpened then
-                        Dropdown:TweenSize(UDim2.new(0.95, 0, 0, 130), "Out", "Quart", 0.3, true)
+                        DropdownFrame:TweenSize(UDim2.new(1, 0, 0, 130), "Out", "Quart", 0.3, true)
                         List:TweenSize(UDim2.new(1, 0, 0, 100), "Out", "Quart", 0.3, true)
                         TweenService:Create(DropdownImage, TweenInfo.new(0.3), {Rotation = 180}):Play()
                     else
-                        Dropdown:TweenSize(UDim2.new(0.95, 0, 0, 30), "Out", "Quart", 0.3, true)
+                        DropdownFrame:TweenSize(UDim2.new(1, 0, 0, 30), "Out", "Quart", 0.3, true)
                         List:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quart", 0.3, true)
                         TweenService:Create(DropdownImage, TweenInfo.new(0.3), {Rotation = 0}):Play()
                     end
@@ -789,7 +814,7 @@ function Library.Main(Name, X, Y)
                     if input.UserInputType == Enum.UserInputType.Touch then
                         spawn(function() config.Callback(string, value) end)
                         DropdownButton.Text = "  " .. string
-                        Dropdown:TweenSize(UDim2.new(0.95, 0, 0, 30), "Out", "Quart", 0.3, true)
+                        DropdownFrame:TweenSize(UDim2.new(1, 0, 0, 30), "Out", "Quart", 0.3, true)
                         List:TweenSize(UDim2.new(1, 0, 0, 0), "Out", "Quart", 0.3, true)
                         TweenService:Create(DropdownImage, TweenInfo.new(0.3), {Rotation = 0}):Play()
                         IsOpened = false
